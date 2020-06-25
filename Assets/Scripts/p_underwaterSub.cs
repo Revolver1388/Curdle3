@@ -72,10 +72,16 @@ public class p_underwaterSub : MonoBehaviour
     private void LateUpdate()
     {
         if (!_isInvert)
-            
+        {
             _spot.transform.rotation = Quaternion.Euler(_lookStorage.y * -1, _lookStorage.x, 0.0f);
+            _body.transform.rotation = Quaternion.Slerp(_body.transform.rotation, Quaternion.Euler(_lookStorage.y * -1, _lookStorage.x, 0.0f), 1 * Time.deltaTime);
+        }
         else
+        {
             _spot.transform.rotation = Quaternion.Euler(_lookStorage.y * 1, _lookStorage.x, 0.0f);
+            _body.transform.rotation = Quaternion.Slerp(_body.transform.rotation, Quaternion.Euler(_lookStorage.y * 1, _lookStorage.x, 0.0f), 1 * Time.deltaTime); 
+
+        }
     }
 
     void Walking(float speed)
