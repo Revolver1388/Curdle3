@@ -35,8 +35,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - PuzzleTrigger
+  - MiniSub
+  - Stone
   m_SortingLayers:
   - name: Default
     uniqueID: 0
