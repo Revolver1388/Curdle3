@@ -4,44 +4,46 @@ using UnityEngine;
 using TMPro;
 using System;
 
-//RITTER
-[RequireComponent(typeof(TextMeshPro))]
+
 public class Timer : MonoBehaviour
 {
-    public static event Action onTimeIsUp; //subscribe to this event to know whenever the time is up
-
-    [Range(0, 59)] [SerializeField] private int Seconds = 59;
     [Range(0, 59)] [SerializeField] private int Minutes = 59;
+    [Range(0, 59)] [SerializeField] private int Seconds = 59;
+    private TextMeshProUGUI text;
+    public float MaxTime { get; private set; }
+    public float CurrentTime { get; private set; }
+    public bool IsActive { get; private set; }
 
-    public TextMeshPro textBox;
-
-    float tempSeconds = 0;
-
-    void Start()
+    private void Start()
     {
-        tempSeconds = Seconds;
-        textBox.text = CurrentTime_String(tempSeconds);
+        text = GetComponent<TextMeshProUGUI>();
+
+        MaxTime = Minutes * 60 + Seconds;
+        CurrentTime = MaxTime;
+
+        IsActive = true;
     }
 
-    void Update()
+    private void FixedUpdate()
     {
-        if (AllowCountdown())
-            tempSeconds -= Time.deltaTime;
-        textBox.text = CurrentTime_String(tempSeconds);
+        if(IsActive)
+        {
+            CurrentTime -= Time.fixedDeltaTime;
+            UpdateText();
+        }
     }
 
-    string CurrentTime_String(float tempSeconds)
+    private void UpdateText()
     {
-        Seconds = (int)Mathf.Ceil(tempSeconds);
-        if (Minutes > 0 && Seconds == 0) { ResetSeconds(); Minutes--; }
-        else if (!AllowCountdown()) { TimeIsUp(); }
-
-        return Minutes + " : " + Seconds;
+        int min = (int)CurrentTime / 60;
+        int sec = (int)CurrentTime % 60;
+        if(sec < 10)
+        {
+            text.text = min + ":0" + sec; 
+        }
+        else
+        {
+            text.text = min + ":" + sec; 
+        }
     }
-
-    bool AllowCountdown() => Seconds <= 0 && Minutes <= 0 ? false : true;
-
-    public void TimeIsUp() => onTimeIsUp?.Invoke();
-
-    void ResetSeconds() { Seconds = 59; tempSeconds = Seconds; }
 }
