@@ -40,7 +40,9 @@ public class p_underwaterSub : MonoBehaviour
     {
         _inputs = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         _lookCoOrds = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+        //MATT
         _objPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //***MATT
         _grabber.localPosition = new Vector3(_objPos.x, _objPos.y, _carryDistance);
         
         if (_isRun) _speedCur = _speedRun;
@@ -56,7 +58,7 @@ public class p_underwaterSub : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
             MouseFunctions();
-        else if (Input.GetMouseButton(0))        
+        else if (Input.GetMouseButton(0)) //****MATTTT       
             _obj.transform.localPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z + _carryDistance);
         
         _anim.SetBool("isRun", _isRun);
