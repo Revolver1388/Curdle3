@@ -4,108 +4,148 @@ using UnityEngine;
 
 public class P_Control : MonoBehaviour
 {
-    Animator _anim;
-    Rigidbody _rb;
-    Vector2 _inputs;
-    Vector2 _lookCoOrds;
-    Vector2 _lookStorage;
-    
-    [SerializeField] GameObject _body;
-    float _groundCheckDistance = 0.6f;
-    [SerializeField] float _jumpStrength;
-    private readonly float _lookSensitivity = 2;
-    private readonly float _speedWalk = 3;
-    private readonly float _speedRun = 5;
-    float _speedCur;
-    bool _isRun;
-    bool _isInvert = false;
+	private Transform selfTransform;
 
-    GameObject _obj;
-    RaycastHit _hit;
-    private void Awake()
-    {
-        if (!_anim) _anim = GetComponent<Animator>();
-        if (!_rb) _rb = GetComponentInParent<Rigidbody>();
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
+	float throttle;
+	float yaw;
+	float pitch;
+	float roll;
+	public float throttleMax = 5f;
+	public float yawMax = 1f;
+	public float pitchMax = 1f;
+	public float rollMax = 1f;
+	public float throttleRate = 1f;
+	public float turnRate = 1f;
+	public float decreaseRate = 1f;
+	//public GameObject propeller;
+	//public ParticleSystem bubbleFX;
 
-    // Update is called once per frame
-    void Update()
-    {
-        _inputs = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        _lookCoOrds = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-        if (_isRun) _speedCur = _speedRun;
-        else _speedCur = _speedWalk;
+	private Transform propellerTransform;
 
-      
-        if (IsGrounded())
-        {
-            if (Input.GetButton("Run")) _isRun = true;
-            else
-                _isRun = false;
+	void Start()
+	{
 
-            if (Input.GetButtonDown("Jump")) Jump();
-        }
-        if (Input.GetMouseButton(1)) Cursor.lockState = CursorLockMode.None;
-        else
-            Cursor.lockState = CursorLockMode.Locked;
+		selfTransform = transform;
+		//propellerTransform = propeller.transform;
+	}
 
-        if (Input.GetMouseButtonDown(0))
-            MouseFunctions();
-        else if (Input.GetMouseButton(0))
-            _obj.transform.parent = transform;
-        if (Input.GetMouseButtonUp(0))
-          _obj.transform.parent = null;
 
-        _anim.SetBool("isRun", _isRun);
-        _anim.SetBool("isGrounded", IsGrounded());
-        _anim.SetFloat("speed", Mathf.Abs(_inputs.y));
-    }
+	void Update()
+	{
+	//	var bblFX = bubbleFX.main;
 
-    private void FixedUpdate()
-    {
-        Walking(_speedCur);
-    }
+		//propellerTransform.rotation *= Quaternion.AngleAxis((throttle * 160f) * Time.deltaTime, Vector3.forward);
 
-    private void LateUpdate()
-    {
-        if (!_isInvert)
-            transform.rotation = Quaternion.Euler(_lookStorage.y * -1, _lookStorage.x, 0.0f);
-        else 
-            transform.rotation = Quaternion.Euler(_lookStorage.y * 1, _lookStorage.x, 0.0f);
-    }
+		//Throttle------------------------------------------------
+		if (Input.GetAxis("Vertical") >= 1)
+		{
+			throttle += Input.GetAxis("Vertical") * throttleRate * Time.deltaTime;
+			throttle = Mathf.Clamp(throttle, 0, throttleMax);
+		}
+		else if (Input.GetAxis("Vertical") <= -1)
+		{
+			throttle += Input.GetAxis("Vertical") * throttleRate * Time.deltaTime;
+			throttle = Mathf.Clamp(throttle, -throttleMax, 0);
+		}
+		else
+		{
+			if (throttle < 0)
+			{
+				throttle += decreaseRate;
+				throttle = Mathf.Clamp(throttle, -throttleMax, 0);
+			}
+			else if (throttle > 0)
+			{
+				throttle -= decreaseRate;
+				throttle = Mathf.Clamp(throttle, 0, throttleMax);
+			}
 
-    public bool IsGrounded()
-    {
-        Debug.DrawRay(_body.transform.position, -transform.up * _groundCheckDistance, Color.red);
-        return Physics.Raycast(_body.transform.position, -transform.up, _groundCheckDistance);
-    }
+		}
 
-    void Walking(float speed)
-    {
-        _lookStorage += _lookCoOrds * _lookSensitivity;
-        _body.transform.Translate(((Vector3.right * _inputs.x) + (Vector3.forward * _inputs.y)) * speed * Time.deltaTime);
-        _body.transform.rotation = Quaternion.Euler(0.0f, _lookStorage.x, 0.0f);
-    }
+		//Yaw---------------------------------------
+		if (Input.GetAxis("Horizontal") >= 1)
+		{
+			yaw += Input.GetAxis("Horizontal") * turnRate * Time.deltaTime;
+			yaw = Mathf.Clamp(yaw, 0, yawMax);
+		}
+		else if (Input.GetAxis("Horizontal") <= -1)
+		{
+			yaw += Input.GetAxis("Horizontal") * turnRate * Time.deltaTime;
+			yaw = Mathf.Clamp(yaw, -yawMax, 0);
+		}
+		else
+		{
+			if (yaw < 0)
+			{
+				yaw += decreaseRate;
+				yaw = Mathf.Clamp(yaw, -yawMax, 0);
+			}
+			else if (yaw > 0)
+			{
+				yaw -= decreaseRate;
+				yaw = Mathf.Clamp(yaw, 0, yawMax);
+			}
 
-    void Jump()
-    {
-        _rb.AddForce(Vector3.up * _jumpStrength, ForceMode.Impulse);
-    }
+		}
 
-    RaycastHit MouseFunctions()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
-        {
-            _obj = hit.collider.gameObject;
-        }
+		//Pitch-----------------------------------------
+		if (Input.GetAxis("Mouse X") >= 1)
+		{
+			pitch += Input.GetAxis("Mouse X") * turnRate * Time.deltaTime;
+			pitch = Mathf.Clamp(pitch, 0, pitchMax);
+		}
+		else if (Input.GetAxis("Mouse X") <= -1)
+		{
+			pitch += Input.GetAxis("Mouse X") * turnRate * Time.deltaTime;
+			pitch = Mathf.Clamp(pitch, -pitchMax, 0);
+		}
+		else
+		{
+			if (pitch < 0)
+			{
+				pitch += decreaseRate;
+				pitch = Mathf.Clamp(pitch, -pitchMax, 0);
+			}
+			else if (pitch > 0)
+			{
+				pitch -= decreaseRate;
+				pitch = Mathf.Clamp(pitch, 0, pitchMax);
+			}
+		}
 
-        return hit;
-    }
+		////Roll-----------------------------------------
+		//if (Input.GetAxis("Roll") >= 1)
+		//{
+		//	roll += Input.GetAxis("Roll") * turnRate * Time.deltaTime;
+		//	roll = Mathf.Clamp(roll, 0, rollMax);
+		//}
+		//else if (Input.GetAxis("Roll") <= -1)
+		//{
+		//	roll += Input.GetAxis("Roll") * turnRate * Time.deltaTime;
+		//	roll = Mathf.Clamp(roll, -rollMax, 0);
+		//}
+		//else
+		//{
+		//	if (roll < 0)
+		//	{
+		//		roll += decreaseRate;
+		//		roll = Mathf.Clamp(roll, -rollMax, 0);
+		//	}
+		//	else if (roll > 0)
+		//	{
+		//		roll -= decreaseRate;
+		//		roll = Mathf.Clamp(roll, 0, rollMax);
+		//	}
+		//}
+
+		//bblFX.startSize = 0.05f * throttle;
+		//bblFX.startSpeed = -4f * throttle;
+
+		selfTransform.Translate(throttle * Vector3.forward);
+		selfTransform.Rotate(yaw * Vector3.up);
+		selfTransform.Rotate(pitch * Vector3.right);
+		selfTransform.Rotate(roll * Vector3.forward);
+
+
+	}
 }
