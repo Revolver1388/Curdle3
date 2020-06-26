@@ -35,8 +35,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - MiniSub
+  - Stone
   m_SortingLayers:
   - name: Default
     uniqueID: 0
