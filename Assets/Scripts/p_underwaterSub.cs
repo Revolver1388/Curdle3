@@ -101,7 +101,7 @@ public class p_underwaterSub : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            if (Vector3.Distance(hit.collider.transform.position,transform.position) < _carryDistance + 0.5f || Vector3.Distance(hit.collider.transform.position, transform.position) > _carryDistance - 0.5f)
+            if (Vector3.Distance(hit.collider.transform.position,transform.position) < _carryDistance + 0.5f /*|| Vector3.Distance(hit.collider.transform.position, transform.position) > _carryDistance - 0.5f*/)
             {
                 _obj = hit.collider.gameObject;
                 _objPos = hit.transform.position;
