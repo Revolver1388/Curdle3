@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-//using UnityEditor.Build.Pipeline.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.Experimental.GlobalIllumination;
@@ -22,7 +21,7 @@ public class p_underwaterSub : MonoBehaviour
 
     [SerializeField] GameObject[] _cams;
     [SerializeField] public GameObject _spot;
-    [SerializeField] Transform _grabber;
+    //[SerializeField] Transform _grabber;
     [SerializeField] public GameObject _subOne;
     [SerializeField] GameObject _subTwo;
     [SerializeField] float _carryDistance;
@@ -58,9 +57,9 @@ public class p_underwaterSub : MonoBehaviour
     {
         _inputs = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         _lookCoOrds = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-        _anim.SetBool("isRun", _isRun);
+        //_anim.SetBool("isRun", _isRun);
         _anim.SetFloat("speed", Mathf.Abs(_inputs.y));
-        _anim.SetBool("switchSub", _isSubOne);
+        //_anim.SetBool("switchSub", _isSubOne);
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -80,8 +79,8 @@ public class p_underwaterSub : MonoBehaviour
                 //if (_isRun) _speedCur = _speedRun;
                 //else _speedCur = _speedWalk;
 
-                if (Input.GetButton("Run")) _isRun = true;
-                else _isRun = false;
+                //if (Input.GetButton("Run")) _isRun = true;
+                //else _isRun = false;
 
                 if (Input.GetMouseButton(1)) Cursor.lockState = CursorLockMode.None;
                 else Cursor.lockState = CursorLockMode.Locked;
