@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class ShatteredGlass : MonoBehaviour
 {
-    [SerializeField] private string parameterName;
     [SerializeField] private float updateTime = 5f;
     private Material mat;
     private Timer timer;
@@ -19,14 +18,14 @@ public class ShatteredGlass : MonoBehaviour
         timer = FindObjectOfType<Timer>();
         audioSource = GetComponent<AudioSource>();
 
-        mat.SetFloat(parameterName, 1f);
+        mat.SetFloat("_Control", 1f);
         StartCoroutine(Wait());
     }
 
     private void UpdatedShatter()
     {
         Debug.Log((timer.CurrentTime / timer.MaxTime) * 2 - 1);
-        mat.SetFloat(parameterName, (timer.CurrentTime / timer.MaxTime) * 2 - 1);
+        mat.SetFloat("_Control", (timer.CurrentTime / timer.MaxTime) * 2 - 1);
         audioSource.PlayOneShot(crackNoise);
     }
 

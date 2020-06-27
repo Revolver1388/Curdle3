@@ -638,6 +638,16 @@ namespace AmplifyShaderEditor
 			return newValue;
 		}
 
+		public bool EditorGUIToggle( Rect position, string text, bool value )
+		{
+			bool newValue = EditorGUI.Toggle( position,text, value );
+			if( newValue != value )
+			{
+				UndoRecordObject( string.Format( MessageFormat, "EditorGUIToggle", ( ( m_nodeAttribs != null ) ? m_nodeAttribs.Name : GetType().ToString() ) ) );
+			}
+			return newValue;
+		}
+
 		public string GUITextField( Rect position, string text, GUIStyle style )
 		{
 			string newValue = GUI.TextField( position, text, style );
