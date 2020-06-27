@@ -50,11 +50,11 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] float cameraOffsetX;
     [SerializeField] float cameraOffsetY;
     [SerializeField] float cameraOffsetZ;
-    float camDist;
-
+    [SerializeField] float camDist;
+    [SerializeField] float rotateSpeed;
     #endregion
 
-    enum CameraType { Orbit }
+    //enum CameraType { Orbit }
    
 
 
@@ -68,18 +68,26 @@ public class PlayerCamera : MonoBehaviour
     void Start()
     {
        
-        currentRotation = Vector3.SmoothDamp(currentRotation, Player.transform.eulerAngles, ref smoothingVelocity, rotationsmoothTime);
-        if (lockCursor) Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+
     }
     private void Update()
     {
-      
-        camDist = UpdateZoom();
+
     }
     private void LateUpdate()
     {
-        CamMovement3D();
+        if (p_underwaterSub._instance._whichSub == p_underwaterSub.Submarine.two)
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, p_underwaterSub._instance._subOne.transform.position - (transform.forward - (transform.right * cameraOffsetX) - (transform.up * cameraOffsetY)) * camDist, ref smoothingVelocity, zoomLerpTime);
+        }
+        else
+        {
+            transform.position = p_underwaterSub._instance._subOne.transform.position;
+            if (!invY)
+                transform.rotation = Quaternion.Slerp(transform.rotation,(Quaternion.Euler(p_underwaterSub._instance._lookStorage.y * -1, p_underwaterSub._instance._lookStorage.x, 0.0f)), rotateSpeed * Time.deltaTime);
+            else
+                transform.rotation = Quaternion.Slerp(transform.rotation, (Quaternion.Euler(p_underwaterSub._instance._lookStorage.y * 1, p_underwaterSub._instance._lookStorage.x, 0.0f)), rotateSpeed * Time.deltaTime);
+        }
     }
 
     //Basic Camera Movements, Orbit around player and joystick control, as well as player offset
@@ -94,32 +102,6 @@ public class PlayerCamera : MonoBehaviour
         transform.position = Player.transform.position - (transform.forward - (transform.right * cameraOffsetX) + (transform.up * cameraOffsetY)) * camDist;
     }
     #region CameraUtilities
-
-    private float UpdateZoom()
-    {
-        zoomTarget = Player.transform.localScale.y * 8;
-        if (main.orthographicSize != zoomTarget)
-        {
-            float target = Mathf.Lerp(main.orthographicSize, zoomTarget, zoomLerpTime * Time.deltaTime);
-            main.orthographicSize = Mathf.Clamp(target, camDistMin, Mathf.Infinity);
-        }
-        return main.orthographicSize;
-    }
-
-    //Checks cameras distance from the player and adjusts accordingly
-    float CameraRaycast(float x)
-    {
-        if (Physics.Raycast(aimer.transform.position, main.transform.position - aimer.transform.position, out hit, x, IgnoreMask))
-            return hit.distance - 0.2f;
-        else
-            return x;
-    }
-
-    //needs to be tied to menu system for adjustment by player
-    public void switchInverseY()
-    {
-        invY = !invY;
-    }
 
     #endregion
 }
