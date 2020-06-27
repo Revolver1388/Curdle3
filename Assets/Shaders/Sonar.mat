@@ -8,9 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Sonar
-  m_Shader: {fileID: 4800000, guid: 2361c0e88e2ad08489c210e81a588c76, type: 3}
-  m_ShaderKeywords: _ADD_PRECOMPUTED_VELOCITY _BLENDMODE_ALPHA _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT
-  m_LightmapFlags: 4
+  m_Shader: {fileID: 4800000, guid: b9b80423d8d640f43a2714fec5a82c0f, type: 3}
+  m_ShaderKeywords: _ADD_PRECOMPUTED_VELOCITY _BLENDMODE_ALPHA _DISABLE_SSR _DOUBLESIDED_ON
+    _SURFACE_TYPE_TRANSPARENT
+  m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
   m_CustomRenderQueue: 3000
@@ -19,13 +20,14 @@ Material:
     RenderType: Transparent
   disabledShaderPasses:
   - TransparentBackface
+  - MOTIONVECTORS
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Texture: {fileID: 2800000, guid: 5798ded558355430c8a9b13ee12a847c, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 2, y: 2}
     m_Floats:
     - _AddPrecomputedVelocity: 1
     - _AlphaCutoff: 0.5
@@ -35,24 +37,24 @@ Material:
     - _BlendMode: 0
     - _CullMode: 0
     - _CullModeForward: 0
-    - _DepthControl: 1
+    - _DepthControl: 2
     - _DepthPower: 1.5
     - _DoubleSidedEnable: 1
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 10
-    - _EmissionIntensity: 0
+    - _EmissionIntensity: 100
     - _EnableFogOnTransparent: 0
     - _IridescenseMask: 0
     - _IridescenseThickness: 0
-    - _ReceivesSSR: 1
+    - _ReceivesSSR: 0
     - _RenderQueueType: 5
     - _RequireSplitLighting: 0
     - _SrcBlend: 1
     - _StencilRef: 0
-    - _StencilRefDepth: 8
+    - _StencilRefDepth: 0
     - _StencilRefDistortionVec: 4
-    - _StencilRefGBuffer: 10
-    - _StencilRefMV: 40
+    - _StencilRefGBuffer: 2
+    - _StencilRefMV: 32
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 8
     - _StencilWriteMaskDistortionVec: 4
@@ -78,5 +80,5 @@ Material:
     - _Albedo: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColour: {r: 0.26353967, g: 1, b: 0, a: 0.54509807}
+    - _EmissionColour: {r: 0, g: 0.24705882, b: 0.46666667, a: 0.5254902}
     - _UVTiling: {r: 0, g: 0, b: 0, a: 0}

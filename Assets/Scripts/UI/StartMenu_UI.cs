@@ -7,7 +7,7 @@ public class StartMenu_UI : MonoBehaviour
 {
    public void StartButton()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Main");
     }
 
     public void QuitButton()
