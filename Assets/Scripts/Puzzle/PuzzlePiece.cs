@@ -17,7 +17,7 @@ public class PuzzlePiece : MonoBehaviour
     }
     [SerializeField] private LayerMask stoneLayer;
 
-
+    //events
     public static event Action<string> activated;
 
     private void OnCollisionEnter(Collision collision)
@@ -26,6 +26,10 @@ public class PuzzlePiece : MonoBehaviour
         {
             isActive = true;
             activated?.Invoke(group);
+            if (particles != null)
+            {
+                SetParticles();
+            }
         }
     }
 
@@ -34,7 +38,26 @@ public class PuzzlePiece : MonoBehaviour
         if (stoneLayer == (stoneLayer | (1 << collision.gameObject.layer)))
         {
             isActive = false;
-            activated(group);
+            activated?.Invoke(group);
+            if(particles != null)
+            {
+                SetParticles();
+            }
         }
     }
+
+    //bubbles
+    private ParticlePlatform particles;
+
+    private void SetParticles()
+    {
+        particles.SetParticles(!isActive);
+    }
+
+    private void Start()
+    {
+        particles = GetComponent<ParticlePlatform>();
+        SetParticles();
+    }
+
 }
