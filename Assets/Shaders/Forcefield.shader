@@ -7,11 +7,18 @@ Shader "Forcefield"
 		[HideInInspector] _AlphaCutoff("Alpha Cutoff ", Range(0, 1)) = 0.5
 		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
 		_Albedo("Albedo", 2D) = "white" {}
+<<<<<<< HEAD
 		_EmissionIntensity("EmissionIntensity", Float) = 0
 		_UVTiling("UVTiling", Vector) = (0,0,0,0)
 		_DepthControl("DepthControl", Float) = 0
 		_DepthPower("DepthPower", Float) = 1.5
 		_EmissionColour("EmissionColour", Color) = (0,0,0,0)
+=======
+		_UVTiling("UVTiling", Vector) = (0,0,0,0)
+		_EmissionColour("EmissionColour", Color) = (0,0,0,0)
+		_EmissionIntensity("EmissionIntensity", Float) = 0
+		_DepthControl("DepthControl", Range( 0 , 1)) = 0
+>>>>>>> Rofo
 
 		[HideInInspector] _RenderQueueType("Render Queue Type", Float) = 5
 		//[HideInInspector] [ToggleUI] _AddPrecomputedVelocity("Add Precomputed Velocity", Float) = 1
@@ -368,7 +375,10 @@ Shader "Forcefield"
 			float2 _UVTiling;
 			float _EmissionIntensity;
 			float _DepthControl;
+<<<<<<< HEAD
 			float _DepthPower;
+=======
+>>>>>>> Rofo
 			float4 _EmissionColor;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
@@ -794,8 +804,15 @@ Shader "Forcefield"
 				float4 screenPos = packedInput.ase_texcoord6;
 				float4 ase_screenPosNorm = screenPos / screenPos.w;
 				ase_screenPosNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_screenPosNorm.z : ase_screenPosNorm.z * 0.5 + 0.5;
+<<<<<<< HEAD
 				float eyeDepth50 = LinearEyeDepth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
 				float clampResult56 = clamp( pow( ( _DepthControl / eyeDepth50 ) , _DepthPower ) , 0.0 , 1.0 );
+=======
+				float clampDepth50 = Linear01Depth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
+				float ifLocalVar63 = 0;
+				if( clampDepth50 > _DepthControl )
+				ifLocalVar63 = clampDepth50;
+>>>>>>> Rofo
 				
 				surfaceDescription.Albedo = tex2D( _Albedo, panner49 ).rgb;
 				surfaceDescription.Normal = float3( 0, 0, 1 );
@@ -807,10 +824,17 @@ Shader "Forcefield"
 				surfaceDescription.Specular = 0;
 				#endif
 
+<<<<<<< HEAD
 				surfaceDescription.Emission = ( _EmissionColour * _EmissionIntensity ).rgb;
 				surfaceDescription.Smoothness = 0.5;
 				surfaceDescription.Occlusion = 1;
 				surfaceDescription.Alpha = clampResult56;
+=======
+				surfaceDescription.Emission = ( _EmissionColour * _EmissionIntensity * ifLocalVar63 ).rgb;
+				surfaceDescription.Smoothness = 0.5;
+				surfaceDescription.Occlusion = 1;
+				surfaceDescription.Alpha = ifLocalVar63;
+>>>>>>> Rofo
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = 0.5;
@@ -972,7 +996,10 @@ Shader "Forcefield"
 			float2 _UVTiling;
 			float _EmissionIntensity;
 			float _DepthControl;
+<<<<<<< HEAD
 			float _DepthPower;
+=======
+>>>>>>> Rofo
 			float4 _EmissionColor;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
@@ -1386,8 +1413,15 @@ Shader "Forcefield"
 				float4 screenPos = packedInput.ase_texcoord1;
 				float4 ase_screenPosNorm = screenPos / screenPos.w;
 				ase_screenPosNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_screenPosNorm.z : ase_screenPosNorm.z * 0.5 + 0.5;
+<<<<<<< HEAD
 				float eyeDepth50 = LinearEyeDepth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
 				float clampResult56 = clamp( pow( ( _DepthControl / eyeDepth50 ) , _DepthPower ) , 0.0 , 1.0 );
+=======
+				float clampDepth50 = Linear01Depth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
+				float ifLocalVar63 = 0;
+				if( clampDepth50 > _DepthControl )
+				ifLocalVar63 = clampDepth50;
+>>>>>>> Rofo
 				
 				surfaceDescription.Albedo = tex2D( _Albedo, panner49 ).rgb;
 				surfaceDescription.Normal = float3( 0, 0, 1 );
@@ -1399,10 +1433,17 @@ Shader "Forcefield"
 				surfaceDescription.Specular = 0;
 				#endif
 
+<<<<<<< HEAD
 				surfaceDescription.Emission = ( _EmissionColour * _EmissionIntensity ).rgb;
 				surfaceDescription.Smoothness = 0.5;
 				surfaceDescription.Occlusion = 1;
 				surfaceDescription.Alpha = clampResult56;
+=======
+				surfaceDescription.Emission = ( _EmissionColour * _EmissionIntensity * ifLocalVar63 ).rgb;
+				surfaceDescription.Smoothness = 0.5;
+				surfaceDescription.Occlusion = 1;
+				surfaceDescription.Alpha = ifLocalVar63;
+>>>>>>> Rofo
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = 0.5;
@@ -1556,7 +1597,10 @@ Shader "Forcefield"
 			float2 _UVTiling;
 			float _EmissionIntensity;
 			float _DepthControl;
+<<<<<<< HEAD
 			float _DepthPower;
+=======
+>>>>>>> Rofo
 			float4 _EmissionColor;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
@@ -1906,10 +1950,19 @@ Shader "Forcefield"
 				float4 screenPos = packedInput.ase_texcoord1;
 				float4 ase_screenPosNorm = screenPos / screenPos.w;
 				ase_screenPosNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_screenPosNorm.z : ase_screenPosNorm.z * 0.5 + 0.5;
+<<<<<<< HEAD
 				float eyeDepth50 = LinearEyeDepth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
 				float clampResult56 = clamp( pow( ( _DepthControl / eyeDepth50 ) , _DepthPower ) , 0.0 , 1.0 );
 				
 				surfaceDescription.Alpha = clampResult56;
+=======
+				float clampDepth50 = Linear01Depth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
+				float ifLocalVar63 = 0;
+				if( clampDepth50 > _DepthControl )
+				ifLocalVar63 = clampDepth50;
+				
+				surfaceDescription.Alpha = ifLocalVar63;
+>>>>>>> Rofo
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = 0.5;
@@ -2033,7 +2086,10 @@ Shader "Forcefield"
 			float2 _UVTiling;
 			float _EmissionIntensity;
 			float _DepthControl;
+<<<<<<< HEAD
 			float _DepthPower;
+=======
+>>>>>>> Rofo
 			float4 _EmissionColor;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
@@ -2380,10 +2436,19 @@ Shader "Forcefield"
 				float4 screenPos = packedInput.ase_texcoord1;
 				float4 ase_screenPosNorm = screenPos / screenPos.w;
 				ase_screenPosNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_screenPosNorm.z : ase_screenPosNorm.z * 0.5 + 0.5;
+<<<<<<< HEAD
 				float eyeDepth50 = LinearEyeDepth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
 				float clampResult56 = clamp( pow( ( _DepthControl / eyeDepth50 ) , _DepthPower ) , 0.0 , 1.0 );
 				
 				surfaceDescription.Alpha = clampResult56;
+=======
+				float clampDepth50 = Linear01Depth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
+				float ifLocalVar63 = 0;
+				if( clampDepth50 > _DepthControl )
+				ifLocalVar63 = clampDepth50;
+				
+				surfaceDescription.Alpha = ifLocalVar63;
+>>>>>>> Rofo
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = 0.5;
@@ -2517,7 +2582,10 @@ Shader "Forcefield"
 			float2 _UVTiling;
 			float _EmissionIntensity;
 			float _DepthControl;
+<<<<<<< HEAD
 			float _DepthPower;
+=======
+>>>>>>> Rofo
 			float4 _EmissionColor;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
@@ -2876,12 +2944,23 @@ Shader "Forcefield"
 				float4 screenPos = packedInput.ase_texcoord3;
 				float4 ase_screenPosNorm = screenPos / screenPos.w;
 				ase_screenPosNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_screenPosNorm.z : ase_screenPosNorm.z * 0.5 + 0.5;
+<<<<<<< HEAD
 				float eyeDepth50 = LinearEyeDepth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
 				float clampResult56 = clamp( pow( ( _DepthControl / eyeDepth50 ) , _DepthPower ) , 0.0 , 1.0 );
 				
 				surfaceDescription.Normal = float3( 0, 0, 1 );
 				surfaceDescription.Smoothness = 1;
 				surfaceDescription.Alpha = clampResult56;
+=======
+				float clampDepth50 = Linear01Depth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
+				float ifLocalVar63 = 0;
+				if( clampDepth50 > _DepthControl )
+				ifLocalVar63 = clampDepth50;
+				
+				surfaceDescription.Normal = float3( 0, 0, 1 );
+				surfaceDescription.Smoothness = 1;
+				surfaceDescription.Alpha = ifLocalVar63;
+>>>>>>> Rofo
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = 0.5;
@@ -3021,7 +3100,10 @@ Shader "Forcefield"
 			float2 _UVTiling;
 			float _EmissionIntensity;
 			float _DepthControl;
+<<<<<<< HEAD
 			float _DepthPower;
+=======
+>>>>>>> Rofo
 			float4 _EmissionColor;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
@@ -3427,12 +3509,23 @@ Shader "Forcefield"
 				float4 screenPos = packedInput.ase_texcoord3;
 				float4 ase_screenPosNorm = screenPos / screenPos.w;
 				ase_screenPosNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_screenPosNorm.z : ase_screenPosNorm.z * 0.5 + 0.5;
+<<<<<<< HEAD
 				float eyeDepth50 = LinearEyeDepth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
 				float clampResult56 = clamp( pow( ( _DepthControl / eyeDepth50 ) , _DepthPower ) , 0.0 , 1.0 );
 				
 				surfaceDescription.Normal = float3( 0, 0, 1 );
 				surfaceDescription.Smoothness = 1;
 				surfaceDescription.Alpha = clampResult56;
+=======
+				float clampDepth50 = Linear01Depth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
+				float ifLocalVar63 = 0;
+				if( clampDepth50 > _DepthControl )
+				ifLocalVar63 = clampDepth50;
+				
+				surfaceDescription.Normal = float3( 0, 0, 1 );
+				surfaceDescription.Smoothness = 1;
+				surfaceDescription.Alpha = ifLocalVar63;
+>>>>>>> Rofo
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = 0.5;
@@ -3611,7 +3704,10 @@ Shader "Forcefield"
 			float2 _UVTiling;
 			float _EmissionIntensity;
 			float _DepthControl;
+<<<<<<< HEAD
 			float _DepthPower;
+=======
+>>>>>>> Rofo
 			float4 _EmissionColor;
 			float _RenderQueueType;
 			#ifdef _ADD_PRECOMPUTED_VELOCITY
@@ -4117,8 +4213,15 @@ Shader "Forcefield"
 				float4 screenPos = packedInput.ase_texcoord8;
 				float4 ase_screenPosNorm = screenPos / screenPos.w;
 				ase_screenPosNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_screenPosNorm.z : ase_screenPosNorm.z * 0.5 + 0.5;
+<<<<<<< HEAD
 				float eyeDepth50 = LinearEyeDepth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
 				float clampResult56 = clamp( pow( ( _DepthControl / eyeDepth50 ) , _DepthPower ) , 0.0 , 1.0 );
+=======
+				float clampDepth50 = Linear01Depth(SampleCameraDepth( ase_screenPosNorm.xy ),_ZBufferParams);
+				float ifLocalVar63 = 0;
+				if( clampDepth50 > _DepthControl )
+				ifLocalVar63 = clampDepth50;
+>>>>>>> Rofo
 				
 				surfaceDescription.Albedo = tex2D( _Albedo, panner49 ).rgb;
 				surfaceDescription.Normal = float3( 0, 0, 1 );
@@ -4130,10 +4233,17 @@ Shader "Forcefield"
 				surfaceDescription.Specular = 0;
 				#endif
 
+<<<<<<< HEAD
 				surfaceDescription.Emission = ( _EmissionColour * _EmissionIntensity ).rgb;
 				surfaceDescription.Smoothness = 0.5;
 				surfaceDescription.Occlusion = 1;
 				surfaceDescription.Alpha = clampResult56;
+=======
+				surfaceDescription.Emission = ( _EmissionColour * _EmissionIntensity * ifLocalVar63 ).rgb;
+				surfaceDescription.Smoothness = 0.5;
+				surfaceDescription.Occlusion = 1;
+				surfaceDescription.Alpha = ifLocalVar63;
+>>>>>>> Rofo
 
 				#ifdef _ALPHATEST_ON
 				surfaceDescription.AlphaClipThreshold = 0.5;
@@ -4311,6 +4421,7 @@ Shader "Forcefield"
 }
 /*ASEBEGIN
 Version=18100
+<<<<<<< HEAD
 0;0;1368;851;1809.951;562.626;1.773551;True;False
 Node;AmplifyShaderEditor.ScreenDepthNode;50;-731.293,675.6893;Inherit;False;0;True;1;0;FLOAT4;0,0,0,0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;52;-736.4242,438.1664;Inherit;False;Property;_DepthControl;DepthControl;3;0;Create;True;0;0;False;0;False;0;0.87;0;0;0;1;FLOAT;0
@@ -4353,3 +4464,43 @@ WireConnection;0;6;45;0
 WireConnection;0;9;56;0
 ASEEND*/
 //CHKSM=155BD2BEE9DE7760A328443CA77656E636696B3D
+=======
+0;0;1368;851;1362.345;337.5523;1.639068;True;False
+Node;AmplifyShaderEditor.TextureCoordinatesNode;46;-1676.087,-602.7265;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.Vector2Node;48;-1389.488,-525.7814;Inherit;False;Property;_UVTiling;UVTiling;1;0;Create;True;0;0;False;0;False;0,0;3.62,2.6;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.RangedFloatNode;52;-905.4242,394.1664;Inherit;False;Property;_DepthControl;DepthControl;4;0;Create;True;0;0;False;0;False;0;0.72;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.ScreenDepthNode;50;-810.5469,299.4688;Inherit;False;1;True;1;0;FLOAT4;0,0,0,0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;44;-271.0336,66.23141;Inherit;False;Property;_EmissionIntensity;EmissionIntensity;3;0;Create;True;0;0;False;0;False;0;723.9;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.ConditionalIfNode;63;-563.5144,306.351;Inherit;False;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.TexturePropertyNode;38;-1140.234,-831.9194;Inherit;True;Property;_Albedo;Albedo;0;0;Create;True;0;0;False;0;False;None;None;False;white;Auto;Texture2D;-1;0;1;SAMPLER2D;0
+Node;AmplifyShaderEditor.PannerNode;49;-1143.061,-604.0125;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;0,0;False;1;FLOAT;0.1;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.ColorNode;59;-297.1119,-122.7853;Inherit;False;Property;_EmissionColour;EmissionColour;2;0;Create;True;0;0;False;0;False;0,0,0,0;0,0.9196048,1,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;45;163.1396,-114.155;Inherit;False;3;3;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SamplerNode;39;-637.9386,-827.7425;Inherit;True;Property;_TextureSample0;Texture Sample 0;1;0;Create;True;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;6;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;10;0,0;Float;False;False;-1;2;UnityEditor.Rendering.HighDefinition.HDLitGUI;0;2;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;Forward;0;10;Forward;0;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;True;1;0;True;-19;0;True;-20;1;0;True;-21;0;True;-22;False;False;True;0;True;-28;False;True;True;0;True;-4;255;False;-1;255;True;-5;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;0;True;-23;True;0;True;-30;False;True;1;LightMode=Forward;False;0;;0;0;Standard;0;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;6;0,0;Float;False;False;-1;2;UnityEditor.Rendering.HighDefinition.HDLitGUI;0;2;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;Distortion;0;6;Distortion;0;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;True;4;1;False;-1;1;False;-1;4;1;False;-1;1;False;-1;True;1;False;-1;1;False;-1;False;False;False;True;True;0;True;-10;255;False;-1;255;True;-11;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;2;False;-1;True;3;False;-1;False;True;1;LightMode=DistortionVectors;False;0;;0;0;Standard;0;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;0;456.8506,-226.232;Float;False;True;-1;2;UnityEditor.Rendering.HighDefinition.HDLitGUI;0;2;Forcefield;53b46d85872c5b24c8f4f0a1c3fe4c87;True;GBuffer;0;0;GBuffer;35;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;True;5;0;False;False;False;True;0;True;-25;False;True;True;0;True;-13;255;False;-1;255;True;-12;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;0;True;-14;False;True;1;LightMode=GBuffer;False;0;;0;0;Standard;41;Surface Type;1;  Rendering Pass;1;  Refraction Model;0;    Blending Mode;0;    Blend Preserves Specular;0;  Receive Fog;0;  Back Then Front Rendering;0;  Transparent Depth Prepass;0;  Transparent Depth Postpass;0;  Transparent Writes Motion Vector;0;  Distortion;0;    Distortion Mode;0;    Distortion Depth Test;1;  ZWrite;0;  Z Test;4;Double-Sided;1;Alpha Clipping;0;  Use Shadow Threshold;1;Material Type,InvertActionOnDeselection;0;  Energy Conserving Specular;1;  Transmission;1;Receive Decals;0;Receives SSR;0;Motion Vectors;0;  Add Precomputed Velocity;0;Specular AA;0;Specular Occlusion Mode;1;Override Baked GI;0;Depth Offset;0;DOTS Instancing;0;LOD CrossFade;0;Tessellation;0;  Phong;0;  Strength;0.5,False,-1;  Type;0;  Tess;16,False,-1;  Min;10,False,-1;  Max;25,False,-1;  Edge Length;16,False,-1;  Max Displacement;25,False,-1;Vertex Position;1;0;11;True;True;True;True;True;True;False;False;False;False;True;False;;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;8;0,0;Float;False;False;-1;2;UnityEditor.Rendering.HighDefinition.HDLitGUI;0;2;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentDepthPrepass;0;8;TransparentDepthPrepass;0;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;True;1;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;False;False;True;0;True;-25;True;False;False;False;False;0;False;-1;False;True;1;False;-1;False;False;True;1;LightMode=TransparentDepthPrepass;False;0;;0;0;Standard;0;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1;0,0;Float;False;False;-1;2;UnityEditor.Rendering.HighDefinition.HDLitGUI;0;2;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;META;0;1;META;0;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;False;False;False;True;2;False;-1;False;False;False;False;False;True;1;LightMode=Meta;False;0;;0;0;Standard;0;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;2;0,0;Float;False;False;-1;2;UnityEditor.Rendering.HighDefinition.HDLitGUI;0;2;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;False;False;False;True;0;True;-25;True;False;False;False;False;0;False;-1;False;True;1;False;-1;True;3;False;-1;False;True;1;LightMode=ShadowCaster;False;0;;0;0;Standard;0;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;9;0,0;Float;False;False;-1;2;UnityEditor.Rendering.HighDefinition.HDLitGUI;0;2;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentDepthPostpass;0;9;TransparentDepthPostpass;0;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;True;1;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;False;False;True;0;True;-25;True;False;False;False;False;0;False;-1;False;True;1;False;-1;False;False;True;1;LightMode=TransparentDepthPostpass;False;0;;0;0;Standard;0;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;7;0,0;Float;False;False;-1;2;UnityEditor.Rendering.HighDefinition.HDLitGUI;0;2;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;TransparentBackface;0;7;TransparentBackface;0;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;True;1;0;True;-19;0;True;-20;1;0;True;-21;0;True;-22;False;False;True;1;False;-1;False;False;True;0;True;-23;True;0;True;-31;False;True;1;LightMode=TransparentBackface;False;0;;0;0;Standard;0;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;5;0,0;Float;False;False;-1;2;UnityEditor.Rendering.HighDefinition.HDLitGUI;0;2;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;Motion Vectors;0;5;Motion Vectors;0;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;False;False;False;True;0;True;-25;False;True;True;0;True;-8;255;False;-1;255;True;-9;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;False;False;True;1;LightMode=MotionVectors;False;0;;0;0;Standard;0;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;4;0,0;Float;False;False;-1;2;UnityEditor.Rendering.HighDefinition.HDLitGUI;0;2;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;DepthOnly;0;4;DepthOnly;0;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;False;False;False;True;0;True;-25;False;True;True;0;True;-6;255;False;-1;255;True;-7;7;False;-1;3;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;False;False;True;1;LightMode=DepthOnly;False;0;;0;0;Standard;0;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;3;0,0;Float;False;False;-1;2;UnityEditor.Rendering.HighDefinition.HDLitGUI;0;2;New Amplify Shader;53b46d85872c5b24c8f4f0a1c3fe4c87;True;SceneSelectionPass;0;3;SceneSelectionPass;0;False;False;False;False;False;False;False;False;False;True;3;RenderPipeline=HDRenderPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;5;0;False;False;False;False;True;False;False;False;False;0;False;-1;False;False;False;False;True;1;LightMode=SceneSelectionPass;False;0;;0;0;Standard;0;0
+WireConnection;63;0;50;0
+WireConnection;63;1;52;0
+WireConnection;63;2;50;0
+WireConnection;49;0;46;0
+WireConnection;49;2;48;0
+WireConnection;45;0;59;0
+WireConnection;45;1;44;0
+WireConnection;45;2;63;0
+WireConnection;39;0;38;0
+WireConnection;39;1;49;0
+WireConnection;0;0;39;0
+WireConnection;0;6;45;0
+WireConnection;0;9;63;0
+ASEEND*/
+//CHKSM=84C97830BEC4382DF92DF5A096233C70E0A0B293
+>>>>>>> Rofo
