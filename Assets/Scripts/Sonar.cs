@@ -43,8 +43,15 @@ public class Sonar : MonoBehaviour
     private IEnumerator SonarCountdown()
     {
         sonarCharge.GetComponent<Animation>().Play();
-        yield return new WaitForSeconds(sonarCooldownTimer);
+        Debug.Log("Sonar cooldown start");
+        for (int i = 0; i < sonarCooldownTimer - 1; i++)
+        {
+            Debug.Log("Cooldown Timer: " + ((sonarCooldownTimer-1) - i));
+
+            yield return new WaitForSeconds(1);
+        }
         sonarIsReady = true;
+        Debug.Log("Sonar is Ready");
         sonarSphere.SetActive(false);
     }
 
