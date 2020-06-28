@@ -15,6 +15,7 @@ public class DebugCamera : MonoBehaviour
     public KeyCode left = KeyCode.A;
     public KeyCode up = KeyCode.Space;
     public KeyCode down = KeyCode.LeftShift;
+    public KeyCode focus = KeyCode.F;
 
     public float speedVertical = 1f;
     public float speedHorizontal = 1f;
@@ -48,8 +49,6 @@ public class DebugCamera : MonoBehaviour
 
     private void SetCameraOn()
     {
-        //debugCamera.gameObject.SetActive(true);
-        //swap display views of main and debug
         debugCamera.targetDisplay = mainDV;
         Camera.main.targetDisplay = displayView;
         transform.position = Camera.main.transform.position;
@@ -86,7 +85,7 @@ public class DebugCamera : MonoBehaviour
             //Debug.Log("Mouse Position: " + mousePosition);
 
             //focus rotation
-            if(Input.GetMouseButton(0) && Input.GetKey(KeyCode.F))
+            if(Input.GetMouseButton(0) && Input.GetKey(focus))
             {
                 if(!didRay)
                 {
@@ -140,7 +139,7 @@ public class DebugCamera : MonoBehaviour
                 Vector3 t = new Vector3(-x, y, 0f);
                 transform.eulerAngles += t;
             }
-            //mouse wheel
+            //mouse wheel press
             else if(Input.GetMouseButton(2))
             {
                 Vector3 h = new Vector3(-Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y") * speedUpDown * Time.deltaTime, 0f);

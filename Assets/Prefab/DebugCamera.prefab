@@ -200,12 +200,13 @@ MonoBehaviour:
   left: 97
   up: 32
   down: 304
-  speedVertical: 30
-  speedHorizontal: 30
-  speedUpDown: 30
-  speedRotationX: 150
-  speedRotationY: 150
-  scrollWheelSpeed: 30
+  focus: 102
+  speedVertical: 20
+  speedHorizontal: 20
+  speedUpDown: 20
+  speedRotationX: 120
+  speedRotationY: 120
+  scrollWheelSpeed: 20
   displayView: 1
   didRay: 0
   rayTarget: {x: 0, y: 0, z: 0}
