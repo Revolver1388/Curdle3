@@ -20,8 +20,17 @@ public class PuzzleMove : MonoBehaviour
         Gizmos.DrawSphere(transform.position + endPos, gizmosSize);
     }
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip audioClip;
+
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        if(audioSource == null)
+        {
+            audioSource = new AudioSource();
+        }
+
         startPos = transform.position;
         endPos += startPos;
         Debug.Log("S: " + startPos + " E: " + endPos);
@@ -51,6 +60,9 @@ public class PuzzleMove : MonoBehaviour
 
     IEnumerator Move(Vector3 destination)
     {
+        //play audio when something moves
+        audioSource.PlayOneShot(audioClip);
+
         Vector3 begin = transform.position;
         float count = 0f;
         while(begin != destination)
