@@ -10,7 +10,7 @@ public abstract class PlayerController : MonoBehaviour
     public Animator anim;
     
     protected Vector3 _objPos;
-    protected Vector2 _inputs;    
+    [SerializeField] protected Vector2 _inputs;    
 
     public float _lookSensitivity = 2f;
     public float speed = 0.5f;
