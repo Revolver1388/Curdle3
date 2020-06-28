@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-//using UnityEditor.Build.Pipeline.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.Experimental.GlobalIllumination;
@@ -17,34 +16,31 @@ public class p_underwaterSub : MonoBehaviour
 
     Vector2 _inputs;
     Vector2 _lookCoOrds;
-    Vector2 _lookStorage;
+    public Vector2 _lookStorage;
     Vector3 _objPos;
 
     [SerializeField] GameObject[] _cams;
     [SerializeField] public GameObject _spot;
-    [SerializeField] Transform _grabber;
+    //[SerializeField] Transform _grabber;
     [SerializeField] public GameObject _subOne;
     [SerializeField] GameObject _subTwo;
-    [SerializeField] float _carryDistance;
-    [SerializeField] float _carrySpeed = 1f;
-
+    float _carryDistance;
+    private readonly float _carrySpeed = 15f;
+    [SerializeField] ParticleSystem[] _bubbles;
     bool _isRun;
-    [SerializeField] float _speedCur;
+    [SerializeField] float _speedCur = 2;
     bool _isInvert = false;
     bool _isSubOne = true;
-    [SerializeField] float _ballast;
-    [SerializeField] float _turnSpeed;
+    [SerializeField] float _ballast = 1.3f;
+    [SerializeField] float _turnSpeed = 2;
     private readonly float _lookSensitivity = 2;
-    private readonly float _speedWalk = 3;
-    private readonly float _speedRun = 5;
 
 
     private void Awake()
     {
         if (!_anim) _anim = GetComponent<Animator>();
         if(!_instance) _instance = this;
-        else if (_instance != this) Destroy(_instance); 
-        
+        else if (_instance != this) Destroy(_instance);         
     }
 
     // Start is called before the first frame update
@@ -74,14 +70,6 @@ public class p_underwaterSub : MonoBehaviour
                 this.transform.parent = _subOne.transform;
                
                 _isSubOne = true;
-                //_grabber.localPosition = new Vector3(_objPos.x, _objPos.y, _carryDistance);
-
-
-                //if (_isRun) _speedCur = _speedRun;
-                //else _speedCur = _speedWalk;
-
-                if (Input.GetButton("Run")) _isRun = true;
-                else _isRun = false;
 
                 if (Input.GetMouseButton(1)) Cursor.lockState = CursorLockMode.None;
                 else Cursor.lockState = CursorLockMode.Locked;
@@ -109,7 +97,33 @@ public class p_underwaterSub : MonoBehaviour
             default:
                 break;
         }
-        
+        if (Input.GetButton("BallastUp"))
+        {
+            if (_bubbles[0].isStopped)
+            {
+                _bubbles[0].Play();
+                _bubbles[1].Play();
+            }
+        }
+        else if (Input.GetButton("BallastDown"))
+        {
+            if (_bubbles[2].isStopped)
+            {
+                _bubbles[2].Play();
+                _bubbles[3].Play();
+            }
+        }
+        if (Input.GetButtonUp("BallastUp"))
+        {
+            _bubbles[0].Stop();
+            _bubbles[1].Stop();
+        }
+        if (Input.GetButtonUp("BallastDown"))
+        {
+            _bubbles[2].Stop();
+            _bubbles[3].Stop();
+        }
+
     }
 
     private void FixedUpdate()
@@ -166,12 +180,29 @@ public class p_underwaterSub : MonoBehaviour
         _lookStorage += _lookCoOrds * _lookSensitivity;
         if (_whichSub == Submarine.one)
         {
-           // _lookStorage.y = Mathf.Clamp(_lookStorage.y, -85, 85);
-           // _lookStorage.x = Mathf.Clamp(_lookStorage.x, -160, 160);
+            // _lookStorage.y = Mathf.Clamp(_lookStorage.y, -85, 85);
+            // _lookStorage.x = Mathf.Clamp(_lookStorage.x, -160, 160);
         }
         obj.transform.Translate(((Vector3.right * _inputs.x) + (Vector3.forward * _inputs.y)) * speed * Time.deltaTime);
-        if (Input.GetButton("BallastUp")) obj.transform.Translate(Vector3.up *_ballast * Time.deltaTime);
-        else if(Input.GetButton("BallastDown")) obj.transform.Translate(Vector3.up * -_ballast * Time.deltaTime);
+        if (Input.GetButton("BallastUp"))
+        {
+            obj.transform.Translate(Vector3.up * _ballast * Time.deltaTime);
+            if (_bubbles[0].isStopped)
+            {
+                _bubbles[0].Play();
+                _bubbles[1].Play();
+            }
+        }
+        else if (Input.GetButton("BallastDown"))
+        {
+            obj.transform.Translate(Vector3.up * -_ballast * Time.deltaTime);
+            if (_bubbles[2].isStopped)
+            {
+                _bubbles[2].Play();
+                _bubbles[3].Play();
+            }
+        }
+
     }
 
     RaycastHit MouseFunctions()
