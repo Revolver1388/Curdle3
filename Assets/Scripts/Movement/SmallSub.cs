@@ -39,8 +39,8 @@ public class SmallSub : PlayerController
         //sub rotation
         if (_lookCoOrds != Vector2.zero)
         {
-            _lookStorage += _lookCoOrds * Time.deltaTime * _lookSensitivity;
-            _lookStorage.x = Mathf.Clamp(_lookStorage.x, -90f, 90f);
+            _lookStorage += _lookCoOrds * Time.fixedDeltaTime * _lookSensitivity;
+            _lookStorage.y = Mathf.Clamp(_lookStorage.y, -90f, 90f);
 
             Debug.Log(_lookStorage);
             transform.rotation = Quaternion.Euler(_lookStorage.y * -1, _lookStorage.x, 0.0f);

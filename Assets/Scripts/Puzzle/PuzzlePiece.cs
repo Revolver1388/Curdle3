@@ -15,14 +15,14 @@ public class PuzzlePiece : MonoBehaviour
     {
         return isActive;
     }
-    [SerializeField] private LayerMask stoneLayer;
+    [SerializeField] private LayerMask triggerLayer;
 
     //events
     public static event Action<string> activated;
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(stoneLayer == (stoneLayer | (1 << collision.gameObject.layer)))
+        if(triggerLayer == (triggerLayer | (1 << collision.gameObject.layer)))
         {
             isActive = true;
             activated?.Invoke(group);
@@ -35,7 +35,7 @@ public class PuzzlePiece : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (stoneLayer == (stoneLayer | (1 << collision.gameObject.layer)))
+        if (triggerLayer == (triggerLayer | (1 << collision.gameObject.layer)))
         {
             isActive = false;
             activated?.Invoke(group);

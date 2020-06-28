@@ -35,8 +35,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - BigSub
+  - SmallSub
   - Stone
   m_SortingLayers:
   - name: Default
