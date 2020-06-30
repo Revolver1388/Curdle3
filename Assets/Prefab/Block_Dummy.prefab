@@ -109,7 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   group: groupName
   endPos: {x: 0, y: 0, z: 0}
-  moveSpeed: 1
+  moveSpeed: 0.3
   gizmosSize: 1
   audioSource: {fileID: 0}
   audioClip: {fileID: 8300000, guid: ba60ea476cbc8874a99905eeb6c18bdf, type: 3}

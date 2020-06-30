@@ -13,12 +13,16 @@ public class BigSub : PlayerController
     //grabber
     [SerializeField] private LayerMask grabLayer;
     [SerializeField] private GameObject grabbedObject = null;
-    [SerializeField] private float grabberSpeed = 5f;
+    [SerializeField] private float grabberSpeedH = 5f;
+    [SerializeField] private float grabberSpeedV = 2f;
+    [SerializeField] private float grabberDistanceMax = 8f;
+    [SerializeField] private float grabberDistanceMin = 2f;
     public Vector3 grabObjDistance;
 
     //spotlight
     public GameObject _spotlight;
-    private bool isLocked = true;
+    [Tooltip("The velocity of the rigid body must be under this value for the spotlight to rotate")]
+    public float maxSpotlightVelocity = 0.5f;
 
     protected override void Start()
     {
@@ -45,13 +49,12 @@ public class BigSub : PlayerController
             //slow down sub by -velocity
             if (rb.velocity != Vector3.zero)
             {
+                //rb.velocity = transform.forward * rb.velocity.magnitude;
                 rb.AddForce(-rb.velocity * speed);
             }
         }
         else
-        {
-            Debug.Log("Moving: " + (transform.forward * _inputs.y).normalized * speed);
-            Debug.Log("Velocity: " + rb.velocity);
+        {            
             rb.AddForce((transform.forward * _inputs.y).normalized * speed);
             if (rb.velocity.magnitude > maxVelocity)
             {
@@ -59,18 +62,24 @@ public class BigSub : PlayerController
             }
         }
     }
+    public void Stop()
+    {
+        rb.velocity = Vector3.zero;
+    }
     public void Spotlight()
     {
         if (_lookCoOrds != Vector2.zero)
-        {
+        {            
             _lookStorage += _lookCoOrds * Time.deltaTime * _lookSensitivity;
             //Debug.Log(_lookStorage);
+            _spotlight.transform.rotation = Quaternion.Euler(_lookStorage.y * -1f, _lookStorage.x, 0.0f);
         }
-        _spotlight.transform.localRotation = Quaternion.Euler(_lookStorage.y * -1, _lookStorage.x, 0.0f);
     }
     public void SubRotate()
     {
-        transform.localRotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0.0f, _lookStorage.x, 0.0f), _turnSpeed * Time.fixedDeltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, 
+                             Quaternion.Euler(-1f *_lookStorage.y, _lookStorage.x, 0f),
+                             _turnSpeed * Time.fixedDeltaTime);
     }
     public void TryGrab()
     {
@@ -80,7 +89,7 @@ public class BigSub : PlayerController
         {
             //set as child
             grabbedObject.transform.parent = transform;
-            grabObjDistance = grabbedObject.transform.position - transform.position;
+            grabObjDistance = grabbedObject.transform.localPosition;
             //turn off gravity from rigidbody?
             grabbedObject.GetComponent<Rigidbody>().useGravity = false;
             Cursor.lockState = CursorLockMode.Locked;
@@ -93,14 +102,25 @@ public class BigSub : PlayerController
         grabbedObject.transform.parent = null;
         grabbedObject.GetComponent<Rigidbody>().useGravity = true;
         grabbedObject = null;
-        Cursor.lockState = CursorLockMode.Confined;
-        currentState = state.TRYGRAB;
+        Cursor.lockState = CursorLockMode.Locked;
+        currentState = state.MOVEEMPTY;
     }    
     public void MoveGrab()
     {
+        //forward back
+        if(Input.mouseScrollDelta.y != 0f)
+        {
+            //move distance to from 
+            if(grabObjDistance.z + (Input.mouseScrollDelta.y * grabberSpeedV * Time.fixedDeltaTime) < grabberDistanceMax &&
+               grabObjDistance.z + (Input.mouseScrollDelta.y * grabberSpeedV * Time.fixedDeltaTime) > grabberDistanceMin)
+            {
+                grabObjDistance += new Vector3(0f, 0f, Input.mouseScrollDelta.y * grabberSpeedV * Time.fixedDeltaTime);
+            }
+        }
+
         if(_lookCoOrds != Vector2.zero)
         {
-            grabObjDistance += ((transform.right * _lookCoOrds.x) + (transform.up * _lookCoOrds.y)) * grabberSpeed * Time.fixedDeltaTime;
+            grabObjDistance += ((transform.right * _lookCoOrds.x) + (transform.up * _lookCoOrds.y)) * grabberSpeedH * Time.fixedDeltaTime;
         }
     }
     public void UpdateGrab()
@@ -121,14 +141,20 @@ public class BigSub : PlayerController
                 if (Input.GetMouseButtonUp(1))
                 {
                     currentState = state.TRYGRAB;
+                    Stop();
                     Cursor.lockState = CursorLockMode.Confined;
                 }
                 break;
             case state.MOVEWITHGRAB:
                 MouseInput();
                 KeyboardInput();
+                if (Input.GetMouseButtonUp(0))
+                {
+                    ReleaseGrab();
+                }
                 if (Input.GetMouseButtonUp(1))
                 {
+                    Stop();
                     currentState = state.MOVEGRAB;
                 }
                 break;
@@ -166,12 +192,18 @@ public class BigSub : PlayerController
         {
             case state.MOVEEMPTY:
                 Move();
-                Spotlight();
+                if(rb.velocity.magnitude < maxSpotlightVelocity)
+                {
+                    Spotlight();
+                }
                 SubRotate();
                 break;
             case state.MOVEWITHGRAB:
                 Move();
-                Spotlight();
+                if (rb.velocity.magnitude < maxSpotlightVelocity)
+                {
+                    Spotlight();
+                }
                 SubRotate();
                 UpdateGrab();
                 break;
@@ -185,21 +217,6 @@ public class BigSub : PlayerController
                 break;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public override void RunLateUpdate()
@@ -223,11 +240,11 @@ public class BigSub : PlayerController
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            //check for geod layer...
+            //check for geod layer
             if (grabLayer == (grabLayer | (1 << hit.collider.gameObject.layer)))
             {
-                if (Vector3.Distance(hit.collider.transform.position, transform.position) < _carryDistance + 0.5f ||
-                Vector3.Distance(hit.collider.transform.position, transform.position) > _carryDistance - 0.5f)
+                if (Vector3.Distance(hit.collider.transform.position, transform.position) < grabberDistanceMax &&
+                Vector3.Distance(hit.collider.transform.position, transform.position) > grabberDistanceMin)
                 {
                     Debug.Log("Grabbed Object: " + hit.collider.gameObject.name);
                     return hit.collider.gameObject;

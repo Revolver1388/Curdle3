@@ -6,12 +6,16 @@ public class PlayerManager : MonoBehaviour
 {
     [SerializeField] PlayerController[] players;
     [SerializeField] int currentPlayerIndex = 0;
+    [SerializeField] KeyCode switchPlayers = KeyCode.Space;
 
     private Camera mainCamera;
     private PlayerController currentSub;
 
     private void SwapPlayer()
     {
+        //stop rb of previous player
+        currentSub.rb.velocity = Vector3.zero;
+
         //just move through array normally
         currentPlayerIndex = (currentPlayerIndex + 1 + players.Length) % players.Length;
         currentSub = players[currentPlayerIndex];
@@ -22,6 +26,7 @@ public class PlayerManager : MonoBehaviour
     {
         mainCamera.transform.parent = currentSub.cameraPosition;
         mainCamera.transform.localPosition = Vector3.zero;
+        mainCamera.transform.rotation = currentSub.transform.rotation;
     }
 
     private void Start()
@@ -34,7 +39,7 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         //check for sub switch here
-        if(Input.GetKeyUp(KeyCode.E))
+        if(Input.GetKeyUp(switchPlayers))
         {
             SwapPlayer();
         }
